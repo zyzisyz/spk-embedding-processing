@@ -8,7 +8,7 @@
 # ************************************************************************/
 
 
-python -c main.py --batch-size 128 \
+python -u main.py --batch-size 128 \
 				  --epochs 200 \
 				  --save-model True
   

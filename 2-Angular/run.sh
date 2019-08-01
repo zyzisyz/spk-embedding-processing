@@ -8,7 +8,7 @@
 # ************************************************************************/
 
 
-python -c main.py --batch-size 64 \
+python -u main.py --batch-size 64 \
 				  --epochs 10 \
-				  --lr 0.01 \
-				  --save-model True
+				  --lr 0.01 
+
