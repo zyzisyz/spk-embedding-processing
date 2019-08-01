@@ -1,3 +1,14 @@
+#!/usr/bin/env python
+# coding=utf-8
+
+# *************************************************************************
+#	> File Name: network.py
+#	> Author: Yang Zhang 
+#	> Mail: zyziszy@foxmail.com
+#	> Created Time: Thu 01 Aug 2019 07:19:51 PM CST
+# ************************************************************************/
+
+
 from __future__ import print_function
 import torch
 from torch import nn, optim
