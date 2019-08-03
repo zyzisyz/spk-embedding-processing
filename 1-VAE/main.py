@@ -6,6 +6,7 @@ from torch import nn, optim
 from torch.nn import functional as F
 from torchvision import datasets, transforms
 from torchvision.utils import save_image
+import os
 
 from model.network import *
 from model.loss import *
@@ -88,10 +89,16 @@ def test(epoch):
     test_loss /= len(test_loader.dataset)
     print('====> Test set loss: {:.4f}'.format(test_loss))
 
+def save_model(model, model_path="pth"):
+	if os.path.exists(model_path)==False:
+		os.mkdir("pth")
+		torch.save(model.state_dict(), model_path)
+
 if __name__ == "__main__":
     for epoch in range(1, args.epochs + 1):
         train(epoch)
         test(epoch)
+        save_model(model)
         with torch.no_grad():
             sample = torch.randn(64, 20).to(device)
             sample = model.decode(sample).cpu()
