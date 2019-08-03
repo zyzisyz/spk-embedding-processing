@@ -9,6 +9,6 @@
 
 
 python -u main.py --batch-size 64 \
-				  --epochs 10 \
-				  --lr 0.01 
+	--epochs 10 \
+	--lr 0.01 
 
