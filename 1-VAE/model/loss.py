@@ -16,7 +16,10 @@ from torch.nn import functional as F
 
 # Reconstruction + KL divergence losses summed over all elements and batch
 def loss_function(recon_x, x, mu, logvar):
-    BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), reduction='sum')
+    # BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), reduction='sum')
+
+    mse = torch.nn.MSELoss(reduce=True, size_average=False)
+    re_construct = mse(recon_x, x.view(-1,784))
 
     # see Appendix B from VAE paper:
     # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
@@ -24,6 +27,7 @@ def loss_function(recon_x, x, mu, logvar):
     # 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
     KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
 
-    return BCE + KLD
+    # return BCE + KLD
+    return re_construct + KLD
 
 
