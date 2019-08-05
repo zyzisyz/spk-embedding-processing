@@ -8,6 +8,6 @@
 # ************************************************************************/
 
 
-python -u main.py --batch-size 128 \
+python -u trainer.py --batch-size 128 \
 	--epochs 200 
 
