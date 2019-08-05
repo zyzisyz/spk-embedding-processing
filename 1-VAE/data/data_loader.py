@@ -75,7 +75,8 @@ class MNIST(VisionDataset):
             data_file = self.training_file
         else:
             data_file = self.test_file
-        self.data, self.targets = torch.load(os.path.join(self.processed_folder, data_file))
+        self.data, self.targets = torch.load(
+            os.path.join(self.processed_folder, data_file))
 
     def __getitem__(self, index):
         """
@@ -132,18 +133,23 @@ class MNIST(VisionDataset):
         # download files
         for url in self.urls:
             filename = url.rpartition('/')[2]
-            download_and_extract_archive(url, download_root=self.raw_folder, filename=filename)
+            download_and_extract_archive(
+                url, download_root=self.raw_folder, filename=filename)
 
         # process and save as torch files
         print('Processing...')
 
         training_set = (
-            read_image_file(os.path.join(self.raw_folder, 'train-images-idx3-ubyte')),
-            read_label_file(os.path.join(self.raw_folder, 'train-labels-idx1-ubyte'))
+            read_image_file(os.path.join(
+                self.raw_folder, 'train-images-idx3-ubyte')),
+            read_label_file(os.path.join(
+                self.raw_folder, 'train-labels-idx1-ubyte'))
         )
         test_set = (
-            read_image_file(os.path.join(self.raw_folder, 't10k-images-idx3-ubyte')),
-            read_label_file(os.path.join(self.raw_folder, 't10k-labels-idx1-ubyte'))
+            read_image_file(os.path.join(
+                self.raw_folder, 't10k-images-idx3-ubyte')),
+            read_label_file(os.path.join(
+                self.raw_folder, 't10k-labels-idx1-ubyte'))
         )
         with open(os.path.join(self.processed_folder, self.training_file), 'wb') as f:
             torch.save(training_set, f)
@@ -261,18 +267,23 @@ class EMNIST(MNIST):
         gzip_folder = os.path.join(self.raw_folder, 'gzip')
         for gzip_file in os.listdir(gzip_folder):
             if gzip_file.endswith('.gz'):
-                extract_archive(os.path.join(gzip_folder, gzip_file), gzip_folder)
+                extract_archive(os.path.join(
+                    gzip_folder, gzip_file), gzip_folder)
 
         # process and save as torch files
         for split in self.splits:
             print('Processing ' + split)
             training_set = (
-                read_image_file(os.path.join(gzip_folder, 'emnist-{}-train-images-idx3-ubyte'.format(split))),
-                read_label_file(os.path.join(gzip_folder, 'emnist-{}-train-labels-idx1-ubyte'.format(split)))
+                read_image_file(os.path.join(
+                    gzip_folder, 'emnist-{}-train-images-idx3-ubyte'.format(split))),
+                read_label_file(os.path.join(
+                    gzip_folder, 'emnist-{}-train-labels-idx1-ubyte'.format(split)))
             )
             test_set = (
-                read_image_file(os.path.join(gzip_folder, 'emnist-{}-test-images-idx3-ubyte'.format(split))),
-                read_label_file(os.path.join(gzip_folder, 'emnist-{}-test-labels-idx1-ubyte'.format(split)))
+                read_image_file(os.path.join(
+                    gzip_folder, 'emnist-{}-test-images-idx3-ubyte'.format(split))),
+                read_label_file(os.path.join(
+                    gzip_folder, 'emnist-{}-test-labels-idx1-ubyte'.format(split)))
             )
             with open(os.path.join(self.processed_folder, self._training_file(split)), 'wb') as f:
                 torch.save(training_set, f)
@@ -356,7 +367,8 @@ class QMNIST(MNIST):
             filename = url.rpartition('/')[2]
             file_path = os.path.join(self.raw_folder, filename)
             if not os.path.isfile(file_path):
-                download_url(url, root=self.raw_folder, filename=filename, md5=None)
+                download_url(url, root=self.raw_folder,
+                             filename=filename, md5=None)
             files.append(file_path)
 
         # process and save as torch files

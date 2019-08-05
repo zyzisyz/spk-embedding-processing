@@ -3,7 +3,7 @@
 
 # *************************************************************************
 #	> File Name: loss.py
-#	> Author: Yang Zhang 
+#	> Author: Yang Zhang
 #	> Mail: zyziszy@foxmail.com
 #	> Created Time: Thu 01 Aug 2019 07:03:51 PM CST
 # ************************************************************************/
@@ -19,7 +19,7 @@ def loss_function(recon_x, x, mu, logvar):
     # BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), reduction='sum')
 
     mse = torch.nn.MSELoss(reduce=True, size_average=False)
-    re_construct = mse(recon_x, x.view(-1,784))
+    re_construct = mse(recon_x, x.view(-1, 784))
 
     # see Appendix B from VAE paper:
     # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
@@ -29,5 +29,3 @@ def loss_function(recon_x, x, mu, logvar):
 
     # return BCE + KLD
     return re_construct + KLD
-
-

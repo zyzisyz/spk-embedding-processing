@@ -3,7 +3,7 @@
 
 # *************************************************************************
 #	> File Name: network.py
-#	> Author: Yang Zhang 
+#	> Author: Yang Zhang
 #	> Mail: zyziszy@foxmail.com
 #	> Created Time: Thu 01 Aug 2019 07:19:51 PM CST
 # ************************************************************************/
@@ -31,9 +31,9 @@ class VAE(nn.Module):
         x = F.relu(self.g1(x))
         x = F.relu(self.g2(x))
         x = F.relu(self.g3(x))
-        x = self.g_out(x) 
-        mean = x[:,:20]
-        sigma = F.softplus(x[:,20:])
+        x = self.g_out(x)
+        mean = x[:, :20]
+        sigma = F.softplus(x[:, 20:])
         return mean, sigma
 
     def reparameterize(self, mu, logvar):
@@ -49,4 +49,3 @@ class VAE(nn.Module):
         mu, logvar = self.encode(x.view(-1, 784))
         z = self.reparameterize(mu, logvar)
         return self.decode(z), mu, logvar
-

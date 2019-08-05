@@ -3,7 +3,7 @@
 
 # *************************************************************************
 #	> File Name: dataloader.py
-#	> Author: Yang Zhang 
+#	> Author: Yang Zhang
 #	> Mail: zyziszy@foxmail.com
 #	> Created Time: Sun 04 Aug 2019 08:36:37 AM CST
 # ************************************************************************/
@@ -29,6 +29,7 @@ class myDataset(Dataset):
         return self.data[idx]
 '''
 
+
 class VoxDev_DataLoader(Dataset):
 
     training_file = 'training.pt'
@@ -48,8 +49,10 @@ class VoxDev_DataLoader(Dataset):
         data_file = self.training_file
 
         training_set = (
-            read_image_file(os.path.join(self.raw_folder, 'train-images-idx3-ubyte')),
-            read_label_file(os.path.join(self.raw_folder, 'train-labels-idx1-ubyte'))
+            read_image_file(os.path.join(
+                self.raw_folder, 'train-images-idx3-ubyte')),
+            read_label_file(os.path.join(
+                self.raw_folder, 'train-labels-idx1-ubyte'))
         )
 
         with open(os.path.join(self.processed_folder, self.training_file), 'wb') as f:
@@ -57,7 +60,7 @@ class VoxDev_DataLoader(Dataset):
 
         # load pytorch tensor
         self.data, self.targets = torch.load(data_file)
-        
+
     def __getitem__(self, index):
         """
         Args:
@@ -67,7 +70,6 @@ class VoxDev_DataLoader(Dataset):
             tuple: (xvector, target) where target is index of the target class.
         """
         xvector, target = self.data[index], int(self.targets[index])
-
 
         if self.target_transform is not None:
             target = self.target_transform(target)
@@ -80,9 +82,10 @@ class VoxDev_DataLoader(Dataset):
 
 class STIW_DataLoader(Dataset):
     def __init__(self, indata):
-        self.data=indata
+        self.data = indata
+
     def __len__(self):
         return len(self.data)
+
     def __getitem__(self, idx):
         return self.data[idx]
-

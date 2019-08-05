@@ -25,9 +25,9 @@ parser.add_argument('--seed', type=int, default=1, metavar='S',
 parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
 parser.add_argument('--save-model', action='store_true', default=False,
-					help='For Saving the current Model')
+                    help='For Saving the current Model')
 parser.add_argument('--lr', type=float, default=0.01, metavar='LR',
-					help='learning rate (default: 0.01)')
+                    help='learning rate (default: 0.01)')
 
 args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
@@ -82,17 +82,19 @@ def test(epoch):
             if i == 0:
                 n = min(data.size(0), 8)
                 comparison = torch.cat([data[:n],
-                                      recon_batch.view(args.batch_size, 1, 28, 28)[:n]])
+                                        recon_batch.view(args.batch_size, 1, 28, 28)[:n]])
                 save_image(comparison.cpu(),
-                         'results/reconstruction_' + str(epoch) + '.png', nrow=n)
+                           'results/reconstruction_' + str(epoch) + '.png', nrow=n)
 
     test_loss /= len(test_loader.dataset)
     print('====> Test set loss: {:.4f}'.format(test_loss))
 
+
 def save_model(model, model_path="pth"):
-	if os.path.exists(model_path)==False:
-		os.mkdir("pth")
-		torch.save(model.state_dict(), model_path)
+    if os.path.exists(model_path) == False:
+        os.mkdir("pth")
+        torch.save(model.state_dict(), model_path)
+
 
 if __name__ == "__main__":
     for epoch in range(1, args.epochs + 1):
