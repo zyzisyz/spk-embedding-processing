@@ -1,5 +1,7 @@
 MNIST
 mnist
+sitw_*
+voxceleb*
 
 # vscode
 .vscode/
