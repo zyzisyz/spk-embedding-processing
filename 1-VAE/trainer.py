@@ -6,6 +6,7 @@ from torch import nn, optim
 from torch.nn import functional as F
 from torchvision import datasets, transforms
 from torchvision.utils import save_image
+from data.data_loader import *
 import os
 
 from model.network import *
@@ -37,23 +38,21 @@ torch.manual_seed(args.seed)
 device = torch.device("cuda" if args.cuda else "cpu")
 
 kwargs = {'num_workers': 1, 'pin_memory': True} if args.cuda else {}
-train_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('./data', train=True, download=True,
-                   transform=transforms.ToTensor()),
-    batch_size=args.batch_size, shuffle=True, **kwargs)
-test_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('./data', train=False, transform=transforms.ToTensor()),
-    batch_size=args.batch_size, shuffle=True, **kwargs)
 
+dataset = VoxDev_DataLoader("./data/voxceleb_combined_200000/xvector.npz")
+
+train_loader = DataLoader(dataset = dataset, batch_size=200, shuffle=True, num_workers=4)
 
 model = VAE().to(device)
-optimizer = optim.Adam(model.parameters(), lr=1e-3)
+optimizer = optim.Adam(model.parameters(), lr=1e-5)
 
 
 def train(epoch):
     model.train()
     train_loss = 0
     for batch_idx, (data, _) in enumerate(train_loader):
+        # input(data.shape)
+        data = data.float()
         data = data.to(device)
         optimizer.zero_grad()
         recon_batch, mu, logvar = model(data)
@@ -83,26 +82,22 @@ def test(epoch):
                 n = min(data.size(0), 8)
                 comparison = torch.cat([data[:n],
                                         recon_batch.view(args.batch_size, 1, 28, 28)[:n]])
-                save_image(comparison.cpu(),
-                           'results/reconstruction_' + str(epoch) + '.png', nrow=n)
 
     test_loss /= len(test_loader.dataset)
     print('====> Test set loss: {:.4f}'.format(test_loss))
 
 
-def save_model(model, model_path="pth"):
-    if os.path.exists(model_path) == False:
+def save_model(model, model_dir="pth", model_name="model.pth"):
+    if os.path.exists(model_dir) == False:
         os.mkdir("pth")
-        torch.save(model.state_dict(), model_path)
+    model_path = os.path.join(model_dir, model_name)
+    torch.save(model.state_dict(), model_path)
 
 
 if __name__ == "__main__":
     for epoch in range(1, args.epochs + 1):
         train(epoch)
-        test(epoch)
+        #test(epoch)
         save_model(model)
         with torch.no_grad():
-            sample = torch.randn(64, 20).to(device)
-            sample = model.decode(sample).cpu()
-            save_image(sample.view(64, 1, 28, 28),
-                       'results/sample_' + str(epoch) + '.png')
+           pass
