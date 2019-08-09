@@ -19,7 +19,7 @@ def loss_function(recon_x, x, mu, logvar):
     # BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), reduction='sum')
 
     mse = torch.nn.MSELoss(reduce=True, size_average=False)
-    re_construct = mse(recon_x, x.view(-1, 784))
+    re_construct = mse(recon_x, x.view(-1, 512))
 
     # see Appendix B from VAE paper:
     # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
